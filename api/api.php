@@ -27,6 +27,8 @@ $app = new ApiService();
 
 $target = $_GET['target'];
 
+
+
 $ret = array();
 
 switch ($target) {
@@ -36,6 +38,10 @@ switch ($target) {
     case 'test':
         $ret = $app->test();
         break;
+    case 'company_data':
+        $company_data = $_GET['company_data'];
+         $ret = $app->getSales($company_data);
+         break;
     default:
         echo "ターゲットが不正です。";
         exit;
