@@ -48,7 +48,7 @@ class ApiService
 
             $line[] = $result['lat'];
             $line[] = $result['lon'];
-            $line[] = $result['company_name'];
+            $line[] = $result['name'];
             $line[] = $result['street_address_1'];
 
             $ret[] = $line;
