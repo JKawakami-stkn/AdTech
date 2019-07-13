@@ -28,15 +28,11 @@ $app = new ApiService();
 $target = $_GET['target'];
 
 
-
 $ret = array();
 
 switch ($target) {
     case 'company':
         $ret = $app->getCompany();
-        break;
-    case 'test':
-        $ret = $app->test();
         break;
     case 'company_data':
         $company_data = $_GET['company_data'];

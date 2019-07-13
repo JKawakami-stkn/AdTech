@@ -56,31 +56,31 @@ class ApiService
 
         return $ret;
     }
-    
-    public function getSales(＄get_company){
-        
+
+    public function getSales($get_company){
+
         $con = $this->connect();
-        
+
         $sql    = "SELECT * FROM 売上毎売上 WHERE 店舗名 = ".＄get_company;
         $params = array();
-        
+
         $stmt = $con->prepare($sql);
         $stmt->execute($params);
-        
+
         $ret = array();
-        
+
         while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            
+
             $line = array();
-            
+
             $line[] = $result['COL2'];
             $line[] = $result['lon'];
             $line[] = $result['company_name'];
             $line[] = $result['street_address_1'];
-            
+
             $ret[] = $line;
-       
-        
+       }
+
     }
 
 }

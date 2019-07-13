@@ -1,0 +1,126 @@
+body {
+  margin:0;
+  font-family: 'Barriecito', cursive;
+  background-color:#f2f2f2;
+}
+
+.header {
+  width:100%;
+  height:60px;
+  _background-color:#008554;
+  background-color:#4f9eff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+}
+
+.header h1 {
+  margin:0;
+  padding-top:8px;
+  padding-left:20px;
+  color:white;
+  font-size: 35px;
+}
+
+.content {
+  width:90%;
+  padding:30px;
+  margin:2%;
+  background-color:white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+}
+
+
+
+#mapcontainer {
+  width:100%;
+  height:350px;
+  border:solid 1px #cccccc;
+}
+
+.chartcontainer {
+  display:inline-block;
+  height:400px;
+  margin-top:10px;
+  border:solid 1px #cccccc;
+  float:left;
+}
+
+.chartdatacontainer {
+  height:400px;
+  margin-top:10px;
+  margin-left:410px;
+  border:solid 1px #cccccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.selectdiv {
+  position: relative;
+  float: left;
+  min-width: 200px;
+  margin-bottom: 20px;
+}
+
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv:after {
+  content: '<>';
+  font: 17px "Consolas", monospace;
+  color: #333;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  right: 11px;
+
+  top: 18px;
+  padding: 0 0 2px;
+  border-bottom: 1px solid #999;
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectdiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 50px;
+  float: right;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  -ms-word-break: normal;
+  word-break: normal;
+}
