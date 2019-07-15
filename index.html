@@ -12,6 +12,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="./lib/leaflet.sprite.js"></script>
   <script type="text/javascript" src="./js/script.js"></script>
+  <script type="text/javascript" src="./js/myChart.js"></script>
 </head>
 
 <body>
@@ -20,32 +21,39 @@
     <h1>Natitoko Analytics</h1>
   </div>
 
-  <div class="content">
-
+  <div class="content w9">
+      <!-- プルダウンリスト -->
     <div class="selectdiv">
       <label>
           <select id="sel">
-            <!-- プルダウンリスト -->
           </select>
       </label>
     </div>
 
-    <div id="mapcontainer">
-      <!-- マップ -->
+    <!-- マップ -->
+    <div id="mapcontainer" class="w9">
     </div>
-
   </div>
 
-  <div class="content">
-
-    <div class="chartcontainer">
-      <canvas id="chart_1" width="400px" ; height="400px" ;><!-- グラフ1 --></canvas>
+  <!-- グラフ1 -->
+  <div class="content w5_left">
+    <div class="graph_container">
+      <canvas id="chart_1" width="400px" ; height="400px";></canvas>
     </div>
+  </div>
 
-    <div class="chartdatacontainer">
-      <p>ここに説明</p>
-    <div>
+  <!-- グラフ2 -->
+  <div class="content w5_right">
+    <div class="graph_container">
+      <canvas id="chart_2" width="400px" ; height="400px";></canvas>
+    </div>
+  </div>
 
+  <!-- グラフ3 -->
+  <div class="content w9">
+    <div class="graph_container">
+      <canvas id="chart_3" width="400px"; height="170px";></canvas>
+    </div>
   </div>
 
 </body>
@@ -163,8 +171,10 @@
       L.geoJson(data).addTo(map);
     });
 
-    // 全データのグラフ表示
-    show_chart(document.getElementById("chart_1").getContext('2d'));
+    // グラフ表示
+    show_chart1(document.getElementById("chart_1").getContext('2d'));
+    show_chart2(document.getElementById("chart_2").getContext('2d'));
+    show_chart3(document.getElementById("chart_3").getContext('2d'));
 
   });
 
@@ -249,7 +259,9 @@
       console.log(selected_companys);
 
       // グラフ更新
-      show_chart(document.getElementById("chart_1").getContext('2d'));
+      show_chart1(document.getElementById("chart_1").getContext('2d'));
+      show_chart2(document.getElementById("chart_2").getContext('2d'));
+      show_chart3(document.getElementById("chart_3").getContext('2d'));
 
     }
   }
@@ -296,6 +308,9 @@
     console.log(selected_companys)
 
     // グラフ更新
-    show_chart(document.getElementById("chart_1").getContext('2d'));
+    show_chart1(document.getElementById("chart_1").getContext('2d'));
+    show_chart2(document.getElementById("chart_2").getContext('2d'));
+    show_chart3(document.getElementById("chart_3").getContext('2d'));
+
   }
 </script>

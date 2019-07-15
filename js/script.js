@@ -13,24 +13,24 @@ data = [['倉敷', '2016', '4', '119', '143', '1449', '546', '428', '4800', '475
 
 var column_name = ['名', '年度', '月', '制服冬上', '制服冬下', 'Yシャツ', `制服夏上`, '制服夏下', '体操服上', '体操服下', '靴下', 'シューズ', '帽子', '体操帽', '合計']
 
-function show_chart(dom){
+function _show_chart(dom){
   var myPieChart = new Chart(dom, {
  type: 'pie',
  data: {
    labels: ['制服冬上', '制服冬下', 'Yシャツ', `制服夏上`, '制服夏下', '体操服上', '体操服下', '靴下', 'シューズ', '帽子', '体操帽'],
    datasets: [{
        backgroundColor: [
+           "#e2ecff",
+           "#d2ecff",
            "#c2ecff",
-           "#b2ecff",
            "#a2ecff",
-           "#92ecff",
            "#82ecff",
-           "#72ecff",
            "#62ecff",
-           "#52ecff",
            "#42ecff",
-           "#32ecff",
            "#22ecff",
+           "#19e3ff",
+           "#18c3ff",
+           "#10acff",
        ],
        data: array
    }]
@@ -45,3 +45,40 @@ function show_chart(dom){
  }
 });
 }
+
+/*
+// Define a plugin to provide data labels
+Chart.plugins.register({
+    afterDatasetsDraw: function (chart, easing) {
+        // To only draw at the end of animation, check for easing === 1
+        var ctx = chart.ctx;
+
+        chart.data.datasets.forEach(function (dataset, i) {
+            var meta = chart.getDatasetMeta(i);
+            if (!meta.hidden) {
+                meta.data.forEach(function (element, index) {
+                    // Draw the text in black, with the specified font
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+
+                    var fontSize = 16;
+                    var fontStyle = 'normal';
+                    var fontFamily = 'Helvetica Neue';
+                    ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
+
+                    // Just naively convert to string for now
+                    //var dataString = dataset.data[index].toString();
+                    var dataString = chart.data.labels[index];
+
+                    // Make sure alignment settings are correct
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+
+                    var padding = 5;
+                    var position = element.tooltipPosition();
+                    ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                });
+            }
+        });
+    }
+});
+*/

@@ -2,6 +2,8 @@ body {
   margin:0;
   font-family: 'Barriecito', cursive;
   background-color:#f2f2f2;
+  min-width: 1055px;
+  _max-width: 1055px;
 }
 
 .header {
@@ -21,14 +23,12 @@ body {
 }
 
 .content {
-  width:90%;
   padding:30px;
-  margin:2%;
+  margin: 2% 2% 0 2%;
   background-color:white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+  overflow:auto;
 }
-
-
 
 #mapcontainer {
   width:100%;
@@ -36,19 +36,28 @@ body {
   border:solid 1px #cccccc;
 }
 
-.chartcontainer {
-  display:inline-block;
+.graphcontainer {
   height:400px;
   margin-top:10px;
-  border:solid 1px #cccccc;
+  clear:both;
+}
+
+.w5_left {
+  width:41.1%;
   float:left;
 }
 
-.chartdatacontainer {
-  height:400px;
-  margin-top:10px;
-  margin-left:410px;
-  border:solid 1px #cccccc;
+.w5_right {
+  width:41.1%;
+}
+
+.w9 {
+  width:90%
+}
+
+
+.table {
+    display: table;
 }
 
 
