@@ -155,6 +155,41 @@ function show_chart3(ctx3){
     }
   });
 }
+
+/* var ctx4 = document.getElementById('myChart4').getContext('2d'); */
+function show_chart4(ctx4){
+  var myChartFour = new Chart(ctx4, {
+    type: 'bar', //棒グラフ ※typeに設定したらチャートを追加できる
+    data: {
+        datasets: [{
+            label: '売上高(百万)', //グラフのラベル名を設定
+            backgroundColor: [
+              "#9FD9F6",
+              "#61C1BE",
+              "#005752",
+            ],
+            data: [20, 13, 16] //グラフの座標を設定
+        }],
+        labels: ['2016年', '2017年', '2018年']
+    },
+      options: { //オプション
+          title: {
+              display: true,
+              text: '年別売上比較',
+              fontSize: 25
+          },
+          scales: { //軸設定
+              yAxes: [{ //y軸設定 ※xAxesもある
+                  ticks: { //最大値最小値設定
+                      beginAtZero: true
+                  }
+              }]
+          },
+          responsive: false, //trueにするとレスポンシブにグラフの縦横幅を調整
+                            //今回は縦幅を指定しているので横幅だけ調整
+      }
+    });
+}
 /*
   </script>
 
