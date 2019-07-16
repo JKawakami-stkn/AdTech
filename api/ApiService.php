@@ -57,11 +57,11 @@ class ApiService
         return $ret;
     }
 
-    public function getSales($get_company){
+    public function getSales($getcompany_data){
 
         $con = $this->connect();
 
-        $sql    = "SELECT * FROM 売上毎売上 WHERE 店舗名 = ".＄get_company;
+        $sql    = "SELECT * FROM company_data WHERE 名 = '".$getcompany_data."'";
         $params = array();
 
         $stmt = $con->prepare($sql);
@@ -73,14 +73,25 @@ class ApiService
 
             $line = array();
 
-            $line[] = $result['COL2'];
-            $line[] = $result['lon'];
-            $line[] = $result['company_name'];
-            $line[] = $result['street_address_1'];
-
+            $line[] = $result['名'];
+            $line[] = $result['年度'];
+            $line[] = $result['月'];
+            $line[] = $result['制服冬上'];
+            $line[] = $result['制服冬下'];
+            $line[] = $result['Yシャツ'];
+            $line[] = $result['制服夏上'];
+            $line[] = $result['制服夏下'];
+            $line[] = $result['体操服上'];
+            $line[] = $result['体操服下'];
+            $line[] = $result['靴下'];
+            $line[] = $result['シューズ'];
+            $line[] = $result['帽子'];
+            $line[] = $result['体操帽'];
+            $line[] = $result['合計'];
+        
             $ret[] = $line;
        }
-
+       return $ret;
     }
 
 }
