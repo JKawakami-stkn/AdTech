@@ -258,8 +258,8 @@
 
       console.log(selected_companys);
 
-      $.get('http://localhost/AdTech/api/api.php?target=company_data&company_data=新見', {}, function(res) {
-      console.log(res);
+      $.get('http://localhost/AdTech/api/api.php?target=company_data&company_data='+e.target.company_name, {}, function(res) {
+          console.log(test(res.data));
        });
       // グラフ更新
       show_chart1(document.getElementById("chart_1").getContext('2d'));
@@ -310,12 +310,12 @@
 
     console.log(selected_companys)
 
-    
+
     // グラフ更新
     show_chart1(document.getElementById("chart_1").getContext('2d'));
     show_chart2(document.getElementById("chart_2").getContext('2d'));
     show_chart3(document.getElementById("chart_3").getContext('2d'));
 
-    
+
   }
 </script>
