@@ -1,198 +1,297 @@
-/*
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <!-- Chart.jsのCDNを記述 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
-</head>
-<body>
-
-  <h1>Chart.js Sample</h1>
-  <!-- まずcanvasを用意する -->
-  <canvas id="myChart1" width="500" height=""></canvas><br><br><br><br><br>
-  <canvas id="myChart2" width="500" height="500"></canvas><br><br><br><br><br>
-  <canvas id="myChart3" width="1200" height="500"></canvas><br><br><br><br><br>
-
-
-  <script>
-*/
-/*
-var ctx1 = document.getElementById('myChart1').getContext('2d'); //getContext("2D")オブジェクトは線、ボックス、円などを描画するメソッドを保持
-ctx1.canvas.height = 450; //キャンバスの縦幅を指定
-*/
-
-//チャートオブジェクトの生成
-function show_chart1(ctx1){
-  var myChartOne = new Chart(ctx1, {
-    type: 'bar', //棒グラフ ※typeに設定したらチャートを追加できる
-    data: {
-      datasets: [{
-        label: '売上高(百万)', //グラフのラベル名を設定
-        backgroundColor: [
-          "#9FD9F6",
-          "#61C1BE",
-          "#00958D",
-          "#005752",
-        ],
-        data: [20, 13, 5, 1] //グラフの座標を設定
-      }],
-      labels: ['A店', 'B店', 'C店', 'D店']
+var myChartOne =　{
+  type: 'bar', //棒グラフ ※typeに設定したらチャートを追加できる
+  data: {
+    datasets: [],
+    labels: [   '制服冬上', '制服冬下', 'Yシャツ','制服夏上',
+                '制服夏下', '体操服上', '体操服下', '靴下',
+                'シューズ', '帽子', '体操帽'
+            ]
+  },
+  options: { //オプション
+    title: {
+      display: true,
+      text: '各店舗の商品別売上',
+      fontSize: 25
     },
-    options: { //オプション
-      title: {
-        display: true,
-        text: '各店舗の売上比較',
-        fontSize: 25
-      },
-      scales: { //軸設定
-        yAxes: [{ //y軸設定 ※xAxesもある
-          ticks: { //最大値最小値設定
-            beginAtZero: true
-          }
-        }]
-      },
-      responsive: true, //trueにするとレスポンシブにグラフの縦横幅を調整
-      //今回は縦幅を指定しているので横幅だけ調整
-    }
-  });
+    scales: { //軸設定
+      yAxes: [{ //y軸設定 ※xAxesもある
+        ticks: { //最大値最小値設定
+          beginAtZero: true
+        }
+      }]
+    },
+    responsive: true, //trueにするとレスポンシブにグラフの縦横幅を調整
+    //今回は縦幅を指定しているので横幅だけ調整
+  }
+}
+
+
+var myChartTwo = {
+  type: 'pie',//グラフの指定
+  data: {
+    datasets: [{
+      data: [],
+      backgroundColor: [//グラフに描画する色の指定
+          "#2490AD",
+          "#3CA5B6",
+          "#53C5D0",
+          "#76DCE4",
+          "#C8E8F2",
+      ],
+      label:'各店舗の売上の割合　単位（千円）',
+    }],
+    labels: []//ラベル名
+  },
+  options: {
+    title: {
+      display: true,
+      text: '各店舗の売上の割合　単位（千円）',
+      fontSize: 25
+    },
+    scales: { //軸設定
+      // yAxes: [{ //y軸設定 ※xAxesもある
+      //     ticks: { //最大値最小値設定
+      //         beginAtZero: true
+      //     }
+      // }]
+    },
+    responsive: true
+
+  }
+}
+
+var myChartThree = {  //myChartFour.data.datasets.
+  type: 'line', //棒グラフ ※typeに設定したらチャートを追加できる
+  data: {
+    datasets: [],
+    labels: []
+  },
+  options: { //オプション
+    title: {
+      display: true,
+      text: '年毎の売り上げ推移',
+      fontSize: 25
+    },
+    scales: { //軸設定
+      yAxes: [{ //y軸設定 ※xAxesもある
+        ticks: { //最大値最小値設定
+          beginAtZero: false
+        }
+      }]
+    },
+    responsive: true, //trueにするとレスポンシブにグラフの縦横幅を調整
+    //今回は縦幅を指定しているので横幅だけ調整
+  }
+}
+
+
+var myChartFour = {  //myChartFour.data.datasets.
+  type: 'line', //棒グラフ ※typeに設定したらチャートを追加できる
+  data: {
+    datasets: [],
+    labels: []
+  },
+  options: { //オプション
+    title: {
+      display: true,
+      text: '月毎の売り上げ推移',
+      fontSize: 25
+    },
+    scales: { //軸設定
+      yAxes: [{ //y軸設定 ※xAxesもある
+        ticks: { //最大値最小値設定
+          beginAtZero: false
+        }
+      }]
+    },
+    responsive: true, //trueにするとレスポンシブにグラフの縦横幅を調整
+    //今回は縦幅を指定しているので横幅だけ調整
+  }
+}
+/*
+var myChartTwo = {
+  type: 'pie', //円グラフ ※'doughnut'に指定するとドーナツチャートになる
+  data: {
+    labels: [],
+    datasets: [{
+      backgroundColor: [
+        "#2490AD",
+        "#3CA5B6",
+        "#53C5D0",
+        "#76DCE4",
+        "#C8E8F2",
+      ],
+      data: []
+    }]
+  },
+  options: { //オプション
+    title: {
+      display: true,
+      text: '各店舗の売上の割合　単位（千円）',
+      fontSize: 25
+    },
+    scales: { //軸設定
+      // yAxes: [{ //y軸設定 ※xAxesもある
+      //     ticks: { //最大値最小値設定
+      //         beginAtZero: true
+      //     }
+      // }]
+    },
+    responsive: true
+  }
+}
+*/
+function show_chart1(ctx1){
+  window.myBar = new Chart(ctx1, myChartOne);
+}
+function chart1_update(chart1_numlist){
+  myChartOne.data.datasets.push(chart1_numlist[chart1_numlist.length - 1]);
+  console.log(myChartOne.data.datasets);
+
+  window.myBar.update();
 }
 
 /*
 var ctx2 = document.getElementById("myChart2").getContext('2d');
 */
+
 function show_chart2(ctx2){
-  var myChartTwo = new Chart(ctx2, {
-    type: 'pie', //円グラフ ※'doughnut'に指定するとドーナツチャートになる
-    data: {
-      labels: ["A店", "B店", "C店", "D店"],
-      datasets: [{
-        backgroundColor: [
-          "#9FD9F6",
-          "#61C1BE",
-          "#00958D",
-          "#005752",
-        ],
-        data: [20, 13, 5, 1]
-      }]
-    },
-    options: { //オプション
-      title: {
-        display: true,
-        text: '各商品の売上の割合',
-        fontSize: 25
-      },
-      scales: { //軸設定
-        // yAxes: [{ //y軸設定 ※xAxesもある
-        //     ticks: { //最大値最小値設定
-        //         beginAtZero: true
-        //     }
-        // }]
-      },
-      responsive: true
-    }
-  });
+  window.myPie = new Chart(ctx2, myChartTwo);
 }
 
-/*
-var ctx3 = document.getElementById("myChart3").getContext('2d');
-*/
+
+function chart2_update(chart2_numlist){
+  var sales_list = [];
+  var company_list = [];
+  console.log(chart2_numlist);
+  for(company_info in chart2_numlist){
+    sales_list.push(chart2_numlist[company_info].price);
+    company_list.push(chart2_numlist[company_info].name);
+  }
+  myChartTwo.data.datasets[0].data = sales_list;
+  myChartTwo.data.labels = company_list;
+  window.myPie.update();
+}
+
+
 function show_chart3(ctx3){
-  var myChartThree = new Chart(ctx3, {
-    type: 'line', //棒グラフ ※typeに設定したらチャートを追加できる
-    data: {
-      datasets: [{
-          label: 'A店',
-          data: [1, 3, 8, 5, 12, 6, 2, 4, 11, 10, 9, 7],
-          type: 'line', //折れ線グラフ
-          borderColor: '#9FD9F6', //折れ線の色を設定
-          lineTension: 0, //0を指定すると直線になる
-          fill: false, //線の下をどのように塗りつぶすか ※'origin'で塗りつぶし
-        },
-        {
-          label: 'B店',
-          data: [5, 7, 4, 10, 3, 1, 8, 2, 6, 11, 12, 9],
-          type: 'line', //折れ線グラフ
-          borderColor: '#61C1BE', //折れ線の色を設定
-          lineTension: 0, //0を指定すると直線になる
-          fill: false, //線の下をどのように塗りつぶすか ※'origin'で塗りつぶし
-        },
-        {
-          label: 'C店',
-          data: [1, 12, 3, 10, 5, 8, 7, 6, 9, 4, 11, 2],
-          type: 'line', //折れ線グラフ
-          borderColor: '#00958D', //折れ線の色を設定
-          lineTension: 0, //0を指定すると直線になる
-          fill: false, //線の下をどのように塗りつぶすか ※'origin'で塗りつぶし
-        },
-        {
-          label: 'D店',
-          data: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-          type: 'line', //折れ線グラフ
-          borderColor: '#005752', //折れ線の色を設定
-          lineTension: 0, //0を指定すると直線になる
-          fill: false, //線の下をどのように塗りつぶすか ※'origin'で塗りつぶし
-        }
-      ],
+  window.myLine1 = new Chart(ctx3, myChartThree);
+}
 
-      labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-    },
-    options: { //オプション
-      title: {
-        display: true,
-        text: '売上の推移',
-        fontSize: 25
-      },
-      scales: { //軸設定
-        yAxes: [{ //y軸設定 ※xAxesもある
-          ticks: { //最大値最小値設定
-            beginAtZero: false
-          }
-        }]
-      },
-      responsive: true, //trueにするとレスポンシブにグラフの縦横幅を調整
-      //今回は縦幅を指定しているので横幅だけ調整
+function chart3_update(chart3_numlist, chart_colorlist){
+
+      var year = [];//label
+      var sales = [];//3年分の売り上げ
+      var dataset = {
+        label: "", // 店名
+        data: [], //年売り上げ数値 50000, 404000, 44000
+        type: 'line',
+        borderColor: "", //色
+        lineTension: 0,
+        fill: false
     }
-  });
+
+    // label
+    dataset.label = chart3_numlist[chart3_numlist.length-1].name;
+
+    // sales
+    for(company_sales in chart3_numlist[chart3_numlist.length-1].sales){
+        a = chart3_numlist[chart3_numlist.length-1].sales[company_sales];
+        sales.push(a.allprice);
+    }
+
+    //label作成 時間があれば新たにチャートの下地を作る関数を作ってそこに配置する（他のちゃーとも）
+    for(company_sales in chart3_numlist[0].sales){//0~2
+      year.push(chart3_numlist[0].sales[company_sales].year);
+    }
+
+    myChartThree.data.labels = year;
+    //ここまで
+    // color
+    dataset.borderColor = chart_colorlist[chart3_numlist.length + 1];
+
+    console.log(dataset.data);
+    dataset.data = sales;
+    myChartThree.data.datasets.push(dataset);
+    myChartThree.data.labels = year;
+    window.myLine1.update();
+
+      /*  [{name: "", sales:[ {year: "", allprice:  }, {year: "", allprice:  } ]}] //一つの会社の情報 */
+
+
+
+
 }
 
-/* var ctx4 = document.getElementById('myChart4').getContext('2d'); */
+
+
+
+
+
+
+
 function show_chart4(ctx4){
-  var myChartFour = new Chart(ctx4, {
-    type: 'bar', //棒グラフ ※typeに設定したらチャートを追加できる
-    data: {
-        datasets: [{
-            label: '売上高(百万)', //グラフのラベル名を設定
-            backgroundColor: [
-              "#9FD9F6",
-              "#61C1BE",
-              "#005752",
-            ],
-            data: [20, 13, 16] //グラフの座標を設定
-        }],
-        labels: ['2016年', '2017年', '2018年']
-    },
-      options: { //オプション
-          title: {
-              display: true,
-              text: '年別売上比較',
-              fontSize: 25
-          },
-          scales: { //軸設定
-              yAxes: [{ //y軸設定 ※xAxesもある
-                  ticks: { //最大値最小値設定
-                      beginAtZero: true
-                  }
-              }]
-          },
-          responsive: false, //trueにするとレスポンシブにグラフの縦横幅を調整
-                            //今回は縦幅を指定しているので横幅だけ調整
-      }
-    });
+   window.myLine2= new Chart(ctx4, myChartFour);
 }
-/*
-  </script>
+function chart4_update(chart4_numlist, chart_colorlist){
+  var month = [];//label
+  var sales = [];//3年分の売り上げ
+  var dataset = {
+    label: "",
+    data: [],
+    type: 'line',
+    borderColor: '',
+    lineTension: 0,
+    fill: false
+  }
 
-</body>
-</html>
-*/
+
+  //label作成 時間があれば新たにチャートの下地を作る関数を作ってそこに配置する（他のちゃーとも）
+  for(company_sales in chart4_numlist[0].sales){
+    month.push(chart4_numlist[0].sales[company_sales].month);
+  }
+
+  company_info = chart4_numlist[chart4_numlist.length-1];//一番最後に追加されたデータをチャートに渡す
+  dataset.label = company_info.name;
+
+  dataset.borderColor = chart_colorlist[chart4_numlist.length-1];
+  for(company_sales in chart4_numlist[chart4_numlist.length-1].sales){
+    sales.push(chart4_numlist[chart4_numlist.length-1].sales[company_sales].price);
+  }
+  console.log("sales   "+sales);
+  dataset.data = sales;
+  console.log(dataset);
+  myChartFour.data.datasets.push(dataset);
+
+  myChartFour.data.labels = month;
+
+  window.myLine2.update();
+/*label: 'A店',
+  data: [1, 3, 8, 5, 12, 6, 2, 4, 11, 10, 9, 7],
+  type: 'line', //折れ線グラフ
+  borderColor: '#9FD9F6', //折れ線の色を設定
+  lineTension: 0, //0を指定すると直線になる
+  fill: false, //線の下をどのように塗りつぶすか ※'origin'で塗りつぶし*/
+
+
+}
+
+
+
+
+
+function delete_chart1(chart1_numlist, company_name){
+  console.log("company_name   "+company_name);
+  /*[[var newDataset = {
+    backgroundColor: [],
+    data: [],
+    label: "",
+    }]]*/
+
+
+
+
+
+
+
+}

@@ -42,14 +42,15 @@ body {
   clear:both;
 }
 
-.w5_left {
-  width:41.1%;
+.w3_left {
+  width:30%;
   float:left;
 }
 
-.w5_right {
-  width:41.1%;
+.w3_right {
+  width:30%;
 }
+
 
 .w9 {
   width:90%
