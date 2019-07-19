@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Leaflet</title>
+    <link href="https://fonts.googleapis.com/css?family=Darker+Grotesque&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./lib/leaflet.sprite.js"></script>
+    <script type="text/javascript" src="./js/script.js"></script>
+    <script type="text/javascript" src="./js/myChart.js"></script>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>TatudeGO Analytics</h1>
+    </div>
+
+    <div class="content w9">
+        <!-- プルダウンリスト -->
+        <div class="selectdiv">
+            <label>
+                <select id="sel"></select>
+            </label>
+        </div>
+
+        <!-- マップ -->
+        <div id="mapcontainer" class="w9"></div>
+    </div>
+
+    <!-- グラフ1 bar-->
+    <div class="content w9">
+        <div class="graph_container">
+            <canvas id="chart_1" width="400px" ; height="100px" ;></canvas>
+        </div>
+    </div>
+
+    <!-- グラフ2 pie-->
+    <div class="content w4_left">
+        <div class="graph_container">
+            <canvas id="chart_2" width="400px" ; height="250px" ;></canvas>
+        </div>
+    </div>
+    <!-- グラフ3 polar-->
+    <div class="content w4_right">
+        <div class="graph_container">
+            <canvas id="chart_3" width="400px" ; height="250px" ;></canvas>
+        </div>
+    </div>
+
+    <!-- グラフ4 line-->
+    <div class="content w9">
+        <div class="graph_container">
+            <canvas id="chart_4" width="400px" ; height="100px" ;></canvas>
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <div class="footer">
+        <p>Members</p>
+    </div>
+
+
+</body>
+
+</html>
+
+
+<script>
+    var prefectures = {
+        "岡山県": {
+            "number": 0,
+            "name": "okayama",
+            "category": okayama = [],
+            "layer": okayama_layer = null,
+            "view": [34.952462, 133.785823]
+        },
+        "広島県": {
+            "number": 1,
+            "name": "hiroshima",
+            "category": hiroshima = [],
+            "layer": hiroshima_layer = null,
+            "view": [34.627653, 132.797053]
+        },
+        "山口県": {
+            "number": 2,
+            "name": "yamaguchi",
+            "category": yamaguchi = [],
+            "layer": yamaguchi_layer = null,
+            "view": [34.274336, 131.566584]
+        },
+        "島根県": {
+            "number": 3,
+            "name": "shimane",
+            "category": shimane = [],
+            "layer": shimane_layer = null,
+            "view": [34.928675, 132.176251]
+        },
+        "鳥取県": {
+            "number": 4,
+            "name": "tottori",
+            "category": tottori = [],
+            "layer": tottori_layer = null,
+            "view": [35.378077, 133.894220]
+        }
+    };
+
+    // 表示中のレイヤー
+    var display_layer = [];
+    var display_layer_name = "all";
+
+    // 選択されている会社
+    var selected_companys = [];
+    // mapオブジェクト？
+    var map = null;
+
+    var chart1_numlist = [];
+    var chart2_numlist = [];
+    var chart3_numlist = [];
+    var chart4_numlist = [];
+    var chart_colorlist = ["#2490AD", "#3CA5B6", "#53C5D0", "#76DCE4", "#C8E8F2"];
+
+    // アイコンイメージ
+    L.Icon.Default.imagePath = 'https://unpkg.com/leaflet@1.3.1/dist/images/';
+
+
+
+
+
+    // プルダウンリスト
+    window.onload = function onLoad() {
+        var target = document.getElementById("sel");
+        var html = "";
+        html += "<option value='all'>全て</option>";
+        for (key in prefectures) {
+            html += "<option value='" + prefectures[key]["name"] + "'>" + key + "</option>";
+        }
+        // console.log(html)
+        target.innerHTML = html;
+        //初期表示
+        show_chart1(document.getElementById("chart_1").getContext('2d'));
+        show_chart2(document.getElementById("chart_2").getContext('2d'));
+        show_chart3(document.getElementById("chart_3").getContext('2d'));
+        show_chart4(document.getElementById("chart_4").getContext('2d'));
+    }
+
+
+    // DB接続
+    $.get('http://localhost/AdTech/api/api.php?target=company', {}, function(res) {
+
+        //console.log(res.data);
+        var marker;
+
+        for (var i in res.data) {
+            // マーカーを作成
+            marker = L.marker([parseFloat(res.data[i][0]), parseFloat(res.data[i][1])]).bindPopup(res.data[i][2])
+                .on('mouseover', openPopup).on('click', onUnselectedMarkerClick);
+            // 割り当て
+            for (key in prefectures) {
+                if (key == res.data[i][3]) {
+                    marker.prefecture = prefectures[key]["name"];
+                    marker.company_name = res.data[i][2];
+                    prefectures[key]["category"].push(marker);
+                }
+            }
+        }
+
+        // レイヤー作成
+        for (key in prefectures) {
+            prefectures[key]["layer"] = L.layerGroup(prefectures[key]["category"]);
+            display_layer.push(prefectures[key]["layer"]);
+            //console.log(prefectures[key]["layer"])
+        }
+
+        // ベースマップ
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        })
+
+        var chiriin = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', {
+            attribution: "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+        })
+
+        var population_distribution = "TODO : 人口分布がわかるマップ追加"
+
+
+        display_layer.push(osm)
+
+        // 初期表示設定
+        map = L.map('mapcontainer', {
+            center: [35.276347, 132.753108],
+            zoom: 7,
+            layers: display_layer
+        })
+
+        var baseMaps = {
+            "オープンストリートマップ": osm,
+            "国土地理院地図": chiriin
+
+        }
+
+        L.control.layers(baseMaps).addTo(map);
+
+        // geoJson読み込み
+        $.getJSON("./map/1.geojson", function(data) {
+            L.geoJson(data).addTo(map);
+        });
+        $.getJSON("./map/2.geojson", function(data) {
+            L.geoJson(data).addTo(map);
+        });
+        $.getJSON("./map/3.geojson", function(data) {
+            L.geoJson(data).addTo(map);
+        });
+        $.getJSON("./map/4.geojson", function(data) {
+            L.geoJson(data).addTo(map);
+        });
+        $.getJSON("./map/5.geojson", function(data) {
+            L.geoJson(data).addTo(map);
+        });
+
+    });
+
+
+
+
+
+    //////////////////////////////////////////////////////////////
+    // プルダウンリストの値が変更された時に表示するレイヤーを切り替える
+    //////////////////////////////////////////////////////////////
+    $('#sel').change(function() {
+
+        var r = $('option:selected').val();
+
+        // 「全体」が選択されていない場合、都道府県レイヤーを全て削除
+        // 「全体」が選択されている場合、都道府県レイヤーを全て追加し終了
+        //console.log(r)
+        if (r != "all") {
+            for (key in prefectures) {
+                map.removeLayer(display_layer[prefectures[key]["number"]]);
+            }
+        } else {
+            for (key in prefectures) {
+                map.addLayer(display_layer[prefectures[key]["number"]]);
+            }
+            map.setView([35.276347, 132.753108], 7.2);
+            display_layer_name = "all";
+            return;
+        }
+
+        // 選択された都道府県のレイヤーを表示して終了
+        for (key in prefectures) {
+            if (r == prefectures[key]["name"]) {
+                map.addLayer(display_layer[prefectures[key]["number"]]);
+                map.setView(prefectures[key]["view"], 8);
+                return;
+            }
+        }
+    })
+
+
+
+
+
+    //////////////////////////////////////////////////////////////
+    // マーカーにカーソル重ねたときポップアップを表示する
+    //////////////////////////////////////////////////////////////
+    function openPopup() {
+        this.openPopup();
+    }
+
+
+
+
+
+    //////////////////////////////////////////////////////////////
+    // 未選択状態のマーカーをクリックしたとき、現在表示しているマーカーを
+    // 　削除し、選択済み状態を表す新たなマーカーを最前面に表示する
+    // 　　選択済みマーカーは所属するレイヤーが非表示でも常に表示される
+    //////////////////////////////////////////////////////////////
+    function onUnselectedMarkerClick(e) {
+
+        if (selected_companys.length > 4) {
+            alert("選択上限です")
+            return;
+        }
+
+        //
+        //var res = window.confirm(e.target.company_name + "を比較対象に追加しますか？");
+
+        //if (res == true) {
+
+            map.removeLayer(e.target);
+
+            marker = L.marker([e.latlng.lat, e.latlng.lng], {
+                    icon: L.spriteIcon('red')
+                }).bindPopup(e.target.company_name)
+                .setZIndexOffset(1000).on('mouseover', openPopup).on('click', onSelectedMarkerClick);
+
+
+            marker.prefecture = e.target.prefecture;
+            marker.company_name = e.target.company_name;
+
+            marker.addTo(map);
+
+            selected_companys.push(e.target.company_name);
+
+            console.log("select  " + selected_companys);
+
+
+            $.get('http://localhost/AdTech/api/api.php?target=company_data&company_data=' + e.target.company_name, {}, function(res) {
+                console.log(test(res.data));
+                //データ整形を参照渡しで行う
+                compersion_bar(res.data, chart1_numlist, chart_colorlist);
+                compersion_pie(res.data, chart2_numlist);
+                compersion_line1(res.data, chart3_numlist);
+                compersion_line2(res.data, chart4_numlist);
+                //ここまで
+
+                // グラフ更新
+                //呼ばれる順番？がこのカッコ内が後なので中に更新宣言
+                chart1_update(chart1_numlist);
+                chart2_update(chart2_numlist);
+                chart3_update(chart3_numlist, chart_colorlist);
+                chart4_update(chart4_numlist, chart_colorlist);
+            });
+        //}
+
+    }
+
+
+
+
+
+    //////////////////////////////////////////////////////////////
+    // 選択済み状態のマーカーをクリックしたとき、現在表示しているマーカーを
+    // 　削除し、未選択状態を表す新たなマーカーを作成する。
+    // 　　マーカーが所属するレイヤーが表示されている場合は、即表示
+    // 　　　そうでない場合は、所属するレイヤーが表示されるまで表示しない
+    //////////////////////////////////////////////////////////////
+    function onSelectedMarkerClick(e) {
+
+        map.removeLayer(e.target);
+        // e.target.onRemove(map)
+
+        marker = L.marker([e.latlng.lat, e.latlng.lng], {
+                icon: L.spriteIcon('blue')
+            }).bindPopup(e.target.company_name)
+            .setZIndexOffset(0).on('mouseover', openPopup).on('click', onUnselectedMarkerClick);
+
+
+        marker.prefecture = e.target.prefecture;
+        marker.company_name = e.target.company_name;
+
+        for (key in prefectures) {
+            if (prefectures[key]["name"] == marker.prefecture) {
+                marker.addTo(prefectures[key]["layer"]);
+                break;
+            }
+        }
+
+        if (display_layer_name != marker.prefecture && display_layer_name != "all") {
+            marker.removeTo(map);
+        }
+
+        if (selected_companys.indexOf(e.target.company_name) >= 0) {
+            selected_companys.splice(selected_companys.indexOf(e.target.company_name), 1);
+        }
+
+        console.log(selected_companys);
+
+
+        // グラフ更新
+        delete_chart1(chart1_numlist, e.target.company_name);
+
+
+    }
+</script>

@@ -208,7 +208,7 @@ function chart3_update(chart3_numlist, chart_colorlist){
     myChartThree.data.labels = year;
     //ここまで
     // color
-    dataset.borderColor = chart_colorlist[chart3_numlist.length + 1];
+    dataset.borderColor = chart_colorlist[chart3_numlist.length - 1];
 
     console.log(dataset.data);
     dataset.data = sales;
