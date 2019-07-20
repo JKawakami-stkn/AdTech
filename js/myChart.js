@@ -188,8 +188,18 @@ function show_chart3(ctx3){
 }
 
 function chart3_update(chart3_numlist, chart_colorlist){
+    myChartThree.data.datasets = [];
+    myChartThree.data.labels = [];
+    var year = [];//label
+    //label作成 時間があれば新たにチャートの下地を作る関数を作ってそこに配置する（他のちゃーとも）
+    if(chart3_numlist.length > 0){
+      for(company_sales in chart3_numlist[0].sales){//0~2
+        year.push(chart3_numlist[0].sales[company_sales].year);
+      }
+    }
 
-      var year = [];//label
+
+    for(i in chart3_numlist){
       var sales = [];//3年分の売り上げ
       var dataset = {
         label: "", // 店名
@@ -198,8 +208,18 @@ function chart3_update(chart3_numlist, chart_colorlist){
         borderColor: "", //色
         lineTension: 0,
         fill: false
+      }
+      dataset.label = chart3_numlist[i].name;
+      for(j in chart3_numlist[i].sales){
+        sales.push(chart3_numlist[i].sales[j].allprice);
+      }
+      dataset.data = sales;
+      dataset.borderColor = chart_colorlist[i];
+      myChartThree.data.datasets.push(dataset);
+      myChartThree.data.labels = year;
     }
-
+    window.myLine1.update();
+    /*
     // label
     dataset.label = chart3_numlist[chart3_numlist.length-1].name;
 
@@ -209,10 +229,7 @@ function chart3_update(chart3_numlist, chart_colorlist){
         sales.push(a.allprice);
     }
 
-    //label作成 時間があれば新たにチャートの下地を作る関数を作ってそこに配置する（他のちゃーとも）
-    for(company_sales in chart3_numlist[0].sales){//0~2
-      year.push(chart3_numlist[0].sales[company_sales].year);
-    }
+
 
     myChartThree.data.labels = year;
     //ここまで
@@ -224,12 +241,8 @@ function chart3_update(chart3_numlist, chart_colorlist){
     myChartThree.data.datasets.push(dataset);
     myChartThree.data.labels = year;
     window.myLine1.update();
-
+    */
       /*  [{name: "", sales:[ {year: "", allprice:  }, {year: "", allprice:  } ]}] //一つの会社の情報 */
-
-
-
-
 }
 
 
@@ -242,24 +255,38 @@ function chart3_update(chart3_numlist, chart_colorlist){
 function show_chart4(ctx4){
    window.myLine2= new Chart(ctx4, myChartFour);
 }
+
 function chart4_update(chart4_numlist, chart_colorlist){
+  myChartFour.data.datasets = [];
+  myChartFour.data.labels = [];
   var month = [];//label
-  var sales = [];//3年分の売り上げ
-  var dataset = {
-    label: "",
-    data: [],
-    type: 'line',
-    borderColor: '',
-    lineTension: 0,
-    fill: false
-  }
-
-
   //label作成 時間があれば新たにチャートの下地を作る関数を作ってそこに配置する（他のちゃーとも）
-  for(company_sales in chart4_numlist[0].sales){
-    month.push(chart4_numlist[0].sales[company_sales].month);
+  if(chart3_numlist.length > 0){
+    for(company_sales in chart4_numlist[0].sales){
+      month.push(chart4_numlist[0].sales[company_sales].month);
+    }
   }
-
+  for(i in chart4_numlist){
+    var sales = [];//3年分の売り上げ
+    var dataset = {
+      label: "", // 店名
+      data: [], //年売り上げ数値 50000, 404000, 44000
+      type: 'line',
+      borderColor: "", //色
+      lineTension: 0,
+      fill: false
+    }
+    dataset.label = chart4_numlist[i].name;
+    for(j in chart4_numlist[i].sales){
+      sales.push(chart4_numlist[i].sales[j].price);
+    }
+    dataset.data = sales;
+    dataset.borderColor = chart_colorlist[i];
+    myChartFour.data.datasets.push(dataset);
+    myChartFour.data.labels = month;
+  }
+  window.myLine2.update();
+  /*
   company_info = chart4_numlist[chart4_numlist.length-1];//一番最後に追加されたデータをチャートに渡す
   dataset.label = company_info.name;
 
@@ -273,8 +300,8 @@ function chart4_update(chart4_numlist, chart_colorlist){
   myChartFour.data.datasets.push(dataset);
 
   myChartFour.data.labels = month;
+  */
 
-  window.myLine2.update();
 /*label: 'A店',
   data: [1, 3, 8, 5, 12, 6, 2, 4, 11, 10, 9, 7],
   type: 'line', //折れ線グラフ
@@ -290,7 +317,6 @@ function chart4_update(chart4_numlist, chart_colorlist){
 
 
 function delete_chart1(chart1_numlist, company_name, chart_colorlist){
-  console.log("company_name   "+company_name);
   for(data in chart1_numlist){
     //console.log(chart1_numlist[data].label+company_name);
     if(chart1_numlist[data].label == company_name){
@@ -307,16 +333,46 @@ function delete_chart1(chart1_numlist, company_name, chart_colorlist){
 
 
 function delete_chart2(chart2_numlist, company_name, chart_colorlist){
-  console.log("company_name  "+company_name);
   for(i in chart2_numlist){
     if(chart2_numlist[i].name == company_name){
-      console.log("削除します");
+      //console.log("削除します");
       chart2_numlist.splice(i, 1);
       break;
     }
   }
+  /*
   for(i in chart1_numlist){
     console.log(chart2_numlist[i].name);
   }
+  */
   chart2_update(chart2_numlist);
+}
+
+
+function delete_chart3(chart3_numlist, company_name, chart_colorlist){
+  for(i in chart3_numlist){
+    if(chart3_numlist[i].name == company_name){
+      //console.log("削除します");
+      chart3_numlist.splice(i, 1);
+      break;
+    }
+  }
+  chart3_update(chart3_numlist, chart_colorlist);
+  /*
+  for(i in chart3_numlist){
+    console.log(chart3_numlist[i].name);
+  }
+  */
+}
+
+
+function delete_chart4(chart4_numlist, company_name, chart_colorlist){
+  for(i in chart4_numlist){
+    if(chart4_numlist[i].name == company_name){
+      console.log("削除します");
+      chart4_numlist.splice(i, 1);
+      break;
+    }
+  }
+  chart4_update(chart4_numlist, chart_colorlist);
 }
