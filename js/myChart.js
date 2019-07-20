@@ -292,19 +292,31 @@ function chart4_update(chart4_numlist, chart_colorlist){
 function delete_chart1(chart1_numlist, company_name, chart_colorlist){
   console.log("company_name   "+company_name);
   for(data in chart1_numlist){
-    console.log(chart1_numlist[data].label+company_name);
+    //console.log(chart1_numlist[data].label+company_name);
     if(chart1_numlist[data].label == company_name){
       chart1_numlist.splice(data, 1);
       break;
     }
   }
   for(i in chart1_numlist){
-    console.log(chart1_numlist[i].label);
+    //console.log(chart1_numlist[i].label);
   }
   chart1_update(chart1_numlist, chart_colorlist);
 }
 
-function delete_chart2(chart2_numlist, company_name, chart_colorlist){
-  
 
+
+function delete_chart2(chart2_numlist, company_name, chart_colorlist){
+  console.log("company_name  "+company_name);
+  for(i in chart2_numlist){
+    if(chart2_numlist[i].name == company_name){
+      console.log("削除します");
+      chart2_numlist.splice(i, 1);
+      break;
+    }
+  }
+  for(i in chart1_numlist){
+    console.log(chart2_numlist[i].name);
+  }
+  chart2_update(chart2_numlist);
 }
