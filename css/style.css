@@ -2,6 +2,7 @@ body {
   margin:0;
   font-family: 'Darker Grotesque', sans-serif;
   background-color:#f2f2f2;
+
   min-width: 1055px;
   _max-width: 1055px;
 }
@@ -9,11 +10,10 @@ body {
 .header {
   width:100%;
   height:60px;
-  _background-color:#008554;
+  background-color:#008554;
   background-color:#4f9eff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.26);
 }
-
 .header h1 {
   margin:0;
   padding-top:8px;
@@ -72,7 +72,14 @@ body {
 
 
 
-
+.header a{
+  text-decoration: none;
+  margin:0;
+  padding-top:8px;
+  padding-left:20px;
+  color:white;
+  font-size: 35px;
+}
 
 
 
