@@ -22,7 +22,7 @@ function test(data){
 }
 
 //chart1各店舗の商品ごとの売上比較用に整形する関数
-function compersion_bar(data, chart1_numlist, chart_colorlist) {
+function compersion_bar(data, chart1_numlist) {
   var shop_name = "";
   var sales_sumlist = [0,0,0,0,0,0,0,0,0,0,0];
   var newDataset = {
@@ -31,9 +31,6 @@ function compersion_bar(data, chart1_numlist, chart_colorlist) {
     label: "",
   };
   shop_name = data[1][0];//店名獲得
-  for(i = 0; i <= sales_sumlist.length; i++){
-    newDataset.backgroundColor.push(chart_colorlist[chart1_numlist.length]);
-  }
   newDataset.label = shop_name;
   for(sale in data){
     for(i = 3,　j = 0; i <= 13; i++, j++){

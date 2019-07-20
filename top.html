@@ -323,7 +323,7 @@
 
                 // グラフ更新
                 //呼ばれる順番？がこのカッコ内が後なので中に更新宣言
-                chart1_update(chart1_numlist);
+                chart1_update(chart1_numlist, chart_colorlist);
                 chart2_update(chart2_numlist);
                 chart3_update(chart3_numlist, chart_colorlist);
                 chart4_update(chart4_numlist, chart_colorlist);
@@ -375,7 +375,8 @@
 
 
         // グラフ更新
-        delete_chart1(chart1_numlist, e.target.company_name);
+        delete_chart1(chart1_numlist, e.target.company_name, chart_colorlist);
+        delete_chart2(chart2_numlist,e.target.company_name, chart_colorlist);
 
 
     }

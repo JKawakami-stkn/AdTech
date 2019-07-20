@@ -144,9 +144,18 @@ var myChartTwo = {
 function show_chart1(ctx1){
   window.myBar = new Chart(ctx1, myChartOne);
 }
-function chart1_update(chart1_numlist){
-  myChartOne.data.datasets.push(chart1_numlist[chart1_numlist.length - 1]);
-  console.log(myChartOne.data.datasets);
+
+function chart1_update(chart1_numlist, chart_colorlist){//毎度初期化して再び入れ直す
+  myChartOne.data.datasets = [];//一度初期化
+  for(var i = 0; i < chart1_numlist.length; i++){//色を授ける
+    for(var j = 0; j < chart1_numlist[i].data.length; j++){
+      chart1_numlist[i].backgroundColor.push(chart_colorlist[i]);
+    }
+  }
+  for(i = 0; i < chart1_numlist.length; i++){
+    myChartOne.data.datasets.push(chart1_numlist[i]);
+
+  }
 
   window.myBar.update();
 }
@@ -280,18 +289,22 @@ function chart4_update(chart4_numlist, chart_colorlist){
 
 
 
-function delete_chart1(chart1_numlist, company_name){
+function delete_chart1(chart1_numlist, company_name, chart_colorlist){
   console.log("company_name   "+company_name);
-  /*[[var newDataset = {
-    backgroundColor: [],
-    data: [],
-    label: "",
-    }]]*/
+  for(data in chart1_numlist){
+    console.log(chart1_numlist[data].label+company_name);
+    if(chart1_numlist[data].label == company_name){
+      chart1_numlist.splice(data, 1);
+      break;
+    }
+  }
+  for(i in chart1_numlist){
+    console.log(chart1_numlist[i].label);
+  }
+  chart1_update(chart1_numlist, chart_colorlist);
+}
 
-
-
-
-
-
+function delete_chart2(chart2_numlist, company_name, chart_colorlist){
+  
 
 }
