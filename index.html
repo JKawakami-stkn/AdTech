@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<meta http-equiv="refresh" content="1000; URL=http://localhost/Adtech/top.html">-->
-
     <title>TatugeGO</title>
 
     <!-- Fonts -->
@@ -25,9 +24,14 @@
                     <img  src="./img/img.png" width="128" height="128" alt="イラスト1  ">
                 </div>
 
+
+                <span id="text">TatudeGO</span>
+
+                <!--
                 <div class="title m-b-md">
                     TatudeGO
                 </div>
+                -->
 
                 <div class="links">
                     <a href="http://localhost/Adtech/top.html">To analytics</a>
@@ -83,18 +87,30 @@
     }
 
     .links>a {
+        font-family: Meiryo, sans-serif;
         _color: #636b6f;
         color : gray;
         padding: 0 25px;
         font-size: 13px;
         font-weight: 600;
-        letter-spacing: .1rem;
+        _letter-spacing: .1rem;
         text-decoration: none;
-        text-transform: uppercase;
+        _text-transform: uppercase;
     }
 
     .m-b-md {
         margin-bottom: 30px;
     }
+
+
+#text{
+   _font-family: Meiryo, sans-serif;
+   line-height: 1.1;
+   font-size: 4.5em;
+   font-weight: bold;
+   color: rgba(0,0,0,0); /*テキストは透過させる*/
+   background-image: url(./img/4.png); /*背景の画像*/
+   -webkit-background-clip: text;  /*背景をテキストでマスクする*/
+}
 
 </style>
