@@ -13,6 +13,10 @@
     <script src="./lib/leaflet.sprite.js"></script>
     <script type="text/javascript" src="./js/script.js"></script>
     <script type="text/javascript" src="./js/myChart.js"></script>
+    <!-- plugin -->
+        <link rel="stylesheet" href="./css/leaflet-search.css">
+        <script src="./js/leaflet-search.js"></script>
+    <!-- plugin -->
 </head>
 
 <body>
@@ -72,6 +76,7 @@
 
 
 <script>
+
     var prefectures = {
         "岡山県": {
             "number": 0,
@@ -119,6 +124,9 @@
     // mapオブジェクト？
     var map = null;
 
+    //検索用データを作成
+    var search_data = [];
+
     var chart1_numlist = [];
     var chart2_numlist = [];
     var chart3_numlist = [];
@@ -156,7 +164,14 @@
         //console.log(res.data);
         var marker;
 
+
         for (var i in res.data) {
+
+          var search = {loc:[], title:""};
+          search.loc.push(res.data[i][0],res.data[i][1]);
+          search.titlle = res.data[i][2];
+          search_data.push(search);
+          //
             // マーカーを作成
             marker = L.marker([parseFloat(res.data[i][0]), parseFloat(res.data[i][1])]).bindPopup(res.data[i][2])
                 .on('mouseover', openPopup).on('click', onUnselectedMarkerClick);
@@ -203,6 +218,28 @@
             "国土地理院地図": chiriin
 
         }
+            // ① 検索用のレイヤーを作成
+        var searchLayer = new L.LayerGroup();
+        map.addLayer(searchLayer);
+
+        // ② 検索コンソール自体の設定
+        var controlSearch = new L.Control.Search({
+        　　　　position:'topright',
+        　　　　layer: searchLayer,
+        　　　　initial: false,
+        　　　　zoom: 15,
+        　　　　　marker: false
+        　　});
+        map.addControl( controlSearch );
+        // ② マーカー用データを１つずつ、検索用レイヤーに追加
+        for(i in search_data) {
+          var title = search_data[i].title,
+              loc = search_data[i].loc,
+              marker = new L.Marker(new L.latLng(loc), {title: title} );
+          marker.bindPopup('title: '+ title );
+          searchLayer.addLayer(marker);
+        }
+
 
         L.control.layers(baseMaps).addTo(map);
 
@@ -224,6 +261,7 @@
         });
 
     });
+
 
 
 
